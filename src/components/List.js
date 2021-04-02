@@ -1,10 +1,10 @@
 import './styles/List.css'
-import React, {useEffect} from 'react'
+import React from 'react'
 import Row from './Row.js'
 import Table from 'react-bootstrap/Table'
 
 
-const List = ({stonks, onClick, isLoading}) => {
+const List = ({stonks, onClick, hasContent}) => {
     const renderAllRows = () => {
         var rows = [];
         for (let i=0; i<stonks.length; i++){
@@ -41,7 +41,25 @@ const List = ({stonks, onClick, isLoading}) => {
         onClick(id)
     }
 
-    if (isLoading){
+    if (hasContent){
+        return (
+            <div className="list">
+            <Table striped bordered hover size="sm">
+                <thead>
+                <tr>
+                    <th>Company Symbol</th>
+                    <th>Price</th>
+                    <th>Change</th>
+                    <th>Time of last refresh</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {renderAllRows()}
+                </tbody>
+            </Table>
+            </div>  
+        )  
+    }else{
         return (
             <div className="list">
             <Table striped bordered hover size="sm">
@@ -64,24 +82,6 @@ const List = ({stonks, onClick, isLoading}) => {
             </Table>
             </div>
         )
-    }else{
-    return (
-        <div className="list">
-        <Table striped bordered hover size="sm">
-            <thead>
-            <tr>
-                <th>Company Symbol</th>
-                <th>Price</th>
-                <th>Change</th>
-                <th>Time of last refresh</th>
-            </tr>
-            </thead>
-            <tbody>
-                {renderAllRows()}
-            </tbody>
-        </Table>
-        </div>    
-    )
     }
 }
 

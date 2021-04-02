@@ -2,12 +2,11 @@ import './styles/Details.css'
 import React, {useState, useEffect} from 'react'
 import Plot from 'react-plotly.js';
 
-const Details = ({stonks, clicked}) => {
+const Details = ({stonks, clicked, hasContent}) => {
     const [xValues, setXValues] = useState([]);
     const [yValues, setYValues] = useState([]);
     
     useEffect(()=>{
-        console.log(stonks)
         try{
             for (let key in stonks[0]['Time Series (Daily)']){
                 setXValues(oldArray => [...oldArray, key]);
@@ -21,7 +20,6 @@ const Details = ({stonks, clicked}) => {
 
     return (
         <div className="details">
-            {clicked} - fetched full company name
             <Plot
             data={[
                 {

@@ -2,7 +2,7 @@ import './styles/Row.css'
 import React from 'react'
 
 
-const Row = ({symbol="failed to fetch", price="failed to fetch", change="failed to fetch", time="failed to fetch", onClick}) => {
+const Row = ({symbol, price, change, time, onClick}) => {
 
     return (
         <tr onClick={() => onClick(symbol)}>
