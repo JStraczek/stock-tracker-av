@@ -1,0 +1,2 @@
+change = previous close - current_price
+change_percent = change / previous_close * 100 %
