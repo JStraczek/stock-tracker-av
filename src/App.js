@@ -8,11 +8,12 @@ import { av } from './config/av.js'
 function App() {
   const [stonks, setStonks] = useState([]);
   const [searchData, setSearchData] = useState([]);
+  const [symbols, setSymbols] = useState([]);
+  const [renderedSymbols, setRenderedSymbols] = useState([]);
   const [hasContent, setHasContent] = useState(false);
+  const [toDetail, setToDetail] = useState("");
+  const [region, setRegion] = useState("United States");
   const [inputValue, setInputValue] = useState("");
-  const [symbols, setSymbols] = useState([])
-  const [clicked, setClicked] = useState(symbols[0]);
-  const [region, setRegion] = useState("United States")
 
   const searchFetch = async () => {
       const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${inputValue}&apikey=${av.apikey}`;
@@ -24,28 +25,29 @@ function App() {
 
   useEffect(()=>{
     const fetchData = async () => {
-      setStonks([]);
-      for (let i=0; i<symbols.length; i++){
-        const url = `${av.base_url}/query?function=TIME_SERIES_DAILY&symbol=${symbols[i]}&interval=15min&apikey=${av.apikey}&datatype=json`;
+      while(symbols.length){
+        let symbol = symbols.pop();
+        const url = `${av.base_url}/query?function=TIME_SERIES_DAILY&symbol=${symbol}&interval=15min&apikey=${av.apikey}&datatype=json`;
         const response = await fetch(url);
         const data = await response.json();
         console.log(data);
+        setRenderedSymbols(oldArray => [...oldArray, symbol])
         setStonks(oldArray => [...oldArray, data]);
       }
-    }
+      }
     fetchData();
     setHasContent(true);
   }, [symbols])
 
   const addTracker = (symbol) => {
-    if (!symbols.includes(symbol)){
+    if (!renderedSymbols.includes(symbol)){
       setSymbols(oldArray => [...oldArray, symbol]);
     }
   }
 
   //Retrieves info about which company to detail
   const handleClick = (id) => {
-    setClicked(id);
+    setToDetail(id);
   }
 
   return (
@@ -94,7 +96,7 @@ function App() {
         <Details
           stonks={stonks}
           hasContent={hasContent}
-          clicked={clicked}
+          toDetail={toDetail}
         />
       </div>
     </div>

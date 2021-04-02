@@ -2,7 +2,7 @@ import './styles/Details.css'
 import React, {useState, useEffect} from 'react'
 import Plot from 'react-plotly.js';
 
-const Details = ({stonks, clicked, hasContent}) => {
+const Details = ({stonks, toDetail, hasContent}) => {
     const [xValues, setXValues] = useState([]);
     const [yValues, setYValues] = useState([]);
     
@@ -16,7 +16,7 @@ const Details = ({stonks, clicked, hasContent}) => {
             console.log('Data still loading');
         }
         
-    },[stonks, clicked])
+    },[stonks, toDetail])
 
     return (
         <div className="details">
@@ -31,7 +31,7 @@ const Details = ({stonks, clicked, hasContent}) => {
                 }
                 
             ]}
-            layout={{title: clicked}}
+            layout={{title: toDetail}}
             />
         </div>
     )
