@@ -1,11 +1,12 @@
 
 .flex-container{
     display: flex;
-    
+
     flex-flow: row wrap;
 
-    justify-content: flex-end;
+    justify-content: space-evenly;
 }
+
 
 
 

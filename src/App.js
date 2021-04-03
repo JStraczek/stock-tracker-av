@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react'
 import List from './components/List.js';
 import Details from './components/Details.js'
 import Table from 'react-bootstrap/Table'
+import Button from 'react-bootstrap/Button'
+import InputGroup from 'react-bootstrap/InputGroup'
 import { av } from './config/av.js'
 
 function App() {
@@ -11,6 +13,7 @@ function App() {
   const [symbols, setSymbols] = useState([]);
   const [renderedSymbols, setRenderedSymbols] = useState([]);
   const [hasContent, setHasContent] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
   const [toDetail, setToDetail] = useState("");
   const [region, setRegion] = useState("United States");
   const [inputValue, setInputValue] = useState("");
@@ -33,6 +36,7 @@ function App() {
         console.log(data);
         setRenderedSymbols(oldArray => [...oldArray, symbol])
         setStonks(oldArray => [...oldArray, data]);
+        setToDetail(symbol);
       }
       }
     fetchData();
@@ -52,21 +56,35 @@ function App() {
 
   return (
     <div className="App">
-
       <div className="flex-container">
 
         <div className="searchbox">
-          <label for="region">Choose a region:</label>
-          <select onChange={(e) => setRegion(e.target.value)}>
-            <option value="United States">USA</option>
-            <option value="United Kingdom">UK</option>
-          </select>
-        
-          <form onSubmit={(e) => e.preventDefault()}>
-            <label>Search for company</label>
-            <input onChange={(e) => setInputValue(e.target.value)}></input>
-            <button type="submit" onClick={() => searchFetch()}>Search</button>
-          </form>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text>Choose a region: </InputGroup.Text>
+            </InputGroup.Prepend>
+            <InputGroup.Append>
+              <select onChange={(e) => setRegion(e.target.value)}>
+                <option value="United States">USA</option>
+                <option value="United Kingdom">UK</option>
+              </select>
+            </InputGroup.Append>
+          <InputGroup.Prepend>
+          <InputGroup.Text>Show more details:</InputGroup.Text>
+          </InputGroup.Prepend>
+          <InputGroup.Checkbox onChange={(e) => setShowDetails(e.target.checked)} defaultChecked></InputGroup.Checkbox>
+          </InputGroup>
+          <InputGroup>
+
+            <InputGroup.Prepend>
+              <InputGroup.Text>Search for company</InputGroup.Text>
+            </InputGroup.Prepend>
+            <InputGroup.Append>
+            <input type="text" onChange={(e) => setInputValue(e.target.value)}></input>
+            </InputGroup.Append>
+            
+            <Button onClick={() => searchFetch()}>Search</Button>
+          </InputGroup>
 
           <Table hover size="sm">
             <thead>
@@ -92,13 +110,12 @@ function App() {
           hasContent={hasContent}
           onClick={(id) => handleClick(id)}
         />
-
-        <Details
+      </div>
+      {showDetails && <Details
           stonks={stonks}
-          hasContent={hasContent}
           toDetail={toDetail}
         />
-      </div>
+      }
     </div>
   );
 }

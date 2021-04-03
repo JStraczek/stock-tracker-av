@@ -1,11 +1,24 @@
 
 
 .details{
-    flex-grow: 2;
+    flex-grow: 1;
 
     display:flex;
 
-    flex-flow: column wrap;
+    flex-flow: nowrap;
 
-    justify-content:space-between;
+    justify-content: center;
+
+    font-family: Arial, Helvetica, sans-serif;
 }
+
+.description{
+    flex-grow: 1;
+
+    display:flex;
+}
+
+.plot{
+    flex-grow: 1;
+}
+

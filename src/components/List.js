@@ -7,32 +7,36 @@ import Table from 'react-bootstrap/Table'
 const List = ({stonks, onClick, hasContent}) => {
     const renderAllRows = () => {
         var rows = [];
-        for (let i=0; i<stonks.length; i++){
-            var symbol = stonks[i]["Meta Data"]["2. Symbol"]
-            let counter = 0
-            let timeValues = [];
-            let priceValues = [];
-            for (let key in stonks[i]['Time Series (Daily)']){
-                timeValues.push(key);
-                priceValues.push(stonks[i]['Time Series (Daily)'][key]['1. open']);
-                if(counter === 1){
-                    break;
-                }
-                counter++;
-            }       
-            
-            let price = priceValues[0];
-            let time = timeValues[0];
-            let change = (100*(priceValues[0]-priceValues[1])/priceValues[1])
-
-            rows.push(<Row
-                key={symbol}
-                symbol={symbol}
-                price={price}
-                time={time}
-                change={change}
-                onClick={(id) => handleClick(id)}
-                />)    
+        try{
+            for (let i=0; i<stonks.length; i++){
+                var symbol = stonks[i]["Meta Data"]["2. Symbol"]
+                let counter = 0
+                let timeValues = [];
+                let priceValues = [];
+                for (let key in stonks[i]['Time Series (Daily)']){
+                    timeValues.push(key);
+                    priceValues.push(stonks[i]['Time Series (Daily)'][key]['1. open']);
+                    if(counter === 1){
+                        break;
+                    }
+                    counter++;
+                }       
+                
+                let price = priceValues[0];
+                let time = timeValues[0];
+                let change = (100*(priceValues[0]-priceValues[1])/priceValues[1])
+    
+                rows.push(<Row
+                    key={symbol}
+                    symbol={symbol}
+                    price={price}
+                    time={time}
+                    change={change}
+                    onClick={(id) => handleClick(id)}
+                    />)   
+            }
+        }catch(e){
+            return rows
         }
         return rows
     }
