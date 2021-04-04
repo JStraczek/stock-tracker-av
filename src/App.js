@@ -13,6 +13,7 @@ function App() {
   const [symbols, setSymbols] = useState([]);
   const [renderedSymbols, setRenderedSymbols] = useState([]);
   const [hasContent, setHasContent] = useState(false);
+  const [hasResults, setHasResults] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
   const [toDetail, setToDetail] = useState("");
   const [region, setRegion] = useState("United States");
@@ -24,6 +25,7 @@ function App() {
       const data = await response.json();
       setSearchData(data["bestMatches"]);
       setSearchData(oldArray => oldArray.filter(element => element["4. region"]===region))
+      setHasResults(true);
   }
 
   useEffect(()=>{
@@ -37,10 +39,10 @@ function App() {
         setRenderedSymbols(oldArray => [...oldArray, symbol])
         setStonks(oldArray => [...oldArray, data]);
         setToDetail(symbol);
+        setHasContent(true);
       }
-      }
+    }
     fetchData();
-    setHasContent(true);
   }, [symbols])
 
   const addTracker = (symbol) => {
@@ -94,7 +96,7 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              {hasContent && searchData.map(result => (
+              {hasResults && searchData.map(result => (
                 <tr onClick={() => addTracker(result["1. symbol"])}>
                   <td>{result["1. symbol"]}</td>
                   <td>{result["2. name"]}</td>
